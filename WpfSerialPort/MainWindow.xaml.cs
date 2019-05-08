@@ -127,6 +127,7 @@ namespace WpfSerialPort
 
             if (Rxdata.DataIdx >= 3)
             {
+
                 //Output
                 Console.Write("\n OneFrame:{0:X2}-{1:X2}-{2:X2}", Rxdata.SerialDatas[0], 
                     Rxdata.SerialDatas[1], 
