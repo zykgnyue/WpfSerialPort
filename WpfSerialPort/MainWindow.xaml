@@ -1,0 +1,46 @@
+﻿<Window x:Class="WpfSerialPort.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfSerialPort"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <StackPanel Orientation="Horizontal">
+    <Expander x:Name="Expander" Header="Serial Port Setting">
+    <StackPanel Orientation="Vertical"  HorizontalAlignment="Left" Width="120">
+        <ComboBox x:Name="comboBoxPortName" 
+                  Margin="5,2,5,0" 
+                  DropDownOpened="ComboBoxPortName_DropDownOpened"/>
+        <ComboBox x:Name="comboBoxBaud" 
+                  Margin="5,2,5,0" 
+                  SelectionChanged="ComboBoxBaud_SelectionChanged" 
+                  DropDownOpened="ComboBoxBaud_DropDownOpened"/>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" >
+            <Button x:Name="btnOpenSerialPort" 
+                    Content="Open" 
+                    Margin="5,2,5,0" 
+                    Click="BtnOpenSerialPort_Click"/>
+            <Button x:Name="btnCloseSerialPort" 
+                    Content="Close" 
+                    Margin="34,2,6,0" 
+                    Click="BtnCloseSerialPort_Click"/>
+        </StackPanel>
+
+    </StackPanel>
+        
+    </Expander>
+        <Expander Header="Data Rx" Width="300">
+            <TextBox x:Name="txtRxData"/>
+            
+        </Expander>
+        <Expander Header="Data Tx" Width="300">
+            <StackPanel Orientation="Vertical">
+                <TextBox x:Name="txtTxData" Height="20" />
+                <Button x:Name="btnSendData" Content="Send" Height="20"/>
+            </StackPanel>
+
+        </Expander>
+    </StackPanel>
+</Window>
