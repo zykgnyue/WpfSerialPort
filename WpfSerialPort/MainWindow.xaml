@@ -35,9 +35,9 @@
             <TextBox x:Name="txtRxData"/>
             
         </Expander>
-        <Expander Header="Data Tx" Width="300">
-            <StackPanel Orientation="Vertical">
-                <TextBox x:Name="txtTxData" Height="20" />
+        <Expander Header="Data Tx" HorizontalAlignment="Stretch" Width="350">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
+                <TextBox x:Name="txtTxData" Height="20" HorizontalAlignment="Stretch"/>
                 <Button x:Name="btnSendData" Content="Send" Height="20"/>
             </StackPanel>
 

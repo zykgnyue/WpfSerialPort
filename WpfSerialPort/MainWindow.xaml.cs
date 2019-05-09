@@ -90,6 +90,7 @@ namespace WpfSerialPort
                 mySerialPort.DataBits = 8;
                 mySerialPort.Handshake = Handshake.None;
                 mySerialPort.RtsEnable = false;
+                mySerialPort.ReceivedBytesThreshold = 1;
                 mySerialPort.DataReceived += new SerialDataReceivedEventHandler(DataReceivedHandler);
 
                 mySerialPort.Open();
@@ -108,37 +109,49 @@ namespace WpfSerialPort
                     object sender,
                     SerialDataReceivedEventArgs e)
         {
-            SerialPort sp = (SerialPort)sender;
-            int indata = sp.ReadByte(); //.ReadExisting();
-            Console.Write("\n{0:X2}\n ", indata);
-            if ((indata & 0x80) !=0)
+            //SerialPort sp = (SerialPort)sender;
+            if (mySerialPort == null)
             {
+                return;
+            }
+            int numOfByte = mySerialPort.BytesToRead;
+            for(int i=0;i< numOfByte;i++)
+            {
+
+                int indata = mySerialPort.ReadByte(); 
+
+                //Console.Write("\n{0:X2}\n ", indata);
+                if ((indata & 0x80) !=0)
+                {
          
-                //Console.Write("\n New Data Frame:");
-                Rxdata.DataIdx = 0;
-                Rxdata.SerialDatas[Rxdata.DataIdx] =(byte) indata;
-                Rxdata.DataIdx++;
-            }else if(Rxdata.DataIdx < Rxdata.SerialDatas.Length)
-            {
-                //Console.Write("{0:X2} ", indata);
-                Rxdata.SerialDatas[Rxdata.DataIdx] = (byte)indata;
-                Rxdata.DataIdx++;
+                    //Console.Write("\n New Data Frame:");
+                    Rxdata.DataIdx = 0;
+                    Rxdata.SerialDatas[Rxdata.DataIdx] =(byte) indata;
+                    Rxdata.DataIdx++;
+                }else if(Rxdata.DataIdx < Rxdata.SerialDatas.Length)
+                {
+                    //Console.Write("{0:X2} ", indata);
+                    Rxdata.SerialDatas[Rxdata.DataIdx] = (byte)indata;
+                    Rxdata.DataIdx++;
+                }
+
+                if (Rxdata.DataIdx >= 3)
+                {
+
+                    //Output
+                    //Console.Write("\n OneFrame:{0:X2}-{1:X2}-{2:X2}", Rxdata.SerialDatas[0], 
+                    //    Rxdata.SerialDatas[1], 
+                    //    Rxdata.SerialDatas[2]);
+                    string msg = string.Format("\n OneFrame:{0:X2}-{1:X2}-{2:X2}, RealData=0x{3:X4}", Rxdata.SerialDatas[0],
+                        Rxdata.SerialDatas[1],
+                        Rxdata.SerialDatas[2],
+                        Rxdata.RealData);
+                    SetTextInTextBox(txtRxData,msg);
+
+                }
             }
 
-            if (Rxdata.DataIdx >= 3)
-            {
 
-                //Output
-                Console.Write("\n OneFrame:{0:X2}-{1:X2}-{2:X2}", Rxdata.SerialDatas[0], 
-                    Rxdata.SerialDatas[1], 
-                    Rxdata.SerialDatas[2]);
-                string msg = string.Format("\n OneFrame:{0:X2}-{1:X2}-{2:X2}", Rxdata.SerialDatas[0],
-                    Rxdata.SerialDatas[1],
-                    Rxdata.SerialDatas[2]);
-                SetTextInTextBox(txtRxData,msg);
-
-            }
-         
 
 
         }
@@ -150,6 +163,7 @@ namespace WpfSerialPort
             if (txtRxData.Dispatcher.CheckAccess())
             {
                 txtRxData.AppendText(msg);
+                txtRxData.ScrollToEnd();
             }
             else
             {

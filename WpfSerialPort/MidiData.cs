@@ -19,6 +19,12 @@ namespace WpfSerialPort
         }
         public int DataIdx { get; set; }
 
+        public int RealData {
+            get
+            {
+                return ((int)serialdatas[2] << 7)+serialdatas[1] ;
+            }
+        }
         public MidiData()
         {
             serialdatas = new byte[3];
