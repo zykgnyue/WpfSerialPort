@@ -62,13 +62,10 @@ void loop() {
 		buffer[2] = (byte)((sensorValue >> 7) & 0x7F);
 		Serial.write(buffer,3);
 	}
-	else {
-		if (Serial.available())
-		{
+	if (Serial.available()>0)
+	{
 			int rxdata=Serial.read();
 			Serial.write(rxdata);
-		}
 	}
-
 	
 }
