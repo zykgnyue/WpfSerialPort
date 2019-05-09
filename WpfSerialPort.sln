@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Analog2SerialMidi", "Analog
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleSerial", "ConsoleSerial\ConsoleSerial.csproj", "{F6FE788C-7E60-4468-976C-7EEF0B031BF6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfAppBind", "WpfAppBind\WpfAppBind.csproj", "{6B035B35-66CF-495D-B6A4-4EFD50587C3E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,14 @@ Global
 		{F6FE788C-7E60-4468-976C-7EEF0B031BF6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F6FE788C-7E60-4468-976C-7EEF0B031BF6}.Release|x86.ActiveCfg = Release|Any CPU
 		{F6FE788C-7E60-4468-976C-7EEF0B031BF6}.Release|x86.Build.0 = Release|Any CPU
+		{6B035B35-66CF-495D-B6A4-4EFD50587C3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B035B35-66CF-495D-B6A4-4EFD50587C3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B035B35-66CF-495D-B6A4-4EFD50587C3E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6B035B35-66CF-495D-B6A4-4EFD50587C3E}.Debug|x86.Build.0 = Debug|Any CPU
+		{6B035B35-66CF-495D-B6A4-4EFD50587C3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B035B35-66CF-495D-B6A4-4EFD50587C3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B035B35-66CF-495D-B6A4-4EFD50587C3E}.Release|x86.ActiveCfg = Release|Any CPU
+		{6B035B35-66CF-495D-B6A4-4EFD50587C3E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

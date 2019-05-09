@@ -29,13 +29,13 @@ namespace WpfSerialPort
             InitializeComponent();
             Rxdata =new MidiData();
 
-            //Binding myBinding = new Binding("FrameMsg");
-            //myBinding.Source = Rxdata.FrameMsg;
+            Binding myBinding = new Binding("FrameMsg");
+            myBinding.Source = Rxdata;
             //myBinding.Mode = BindingMode.TwoWay;
            
             /////myBinding.ElementName = "FrameMsg";
             //// Bind the new data source to the myText TextBlock control's Text dependency property.
-            //txtRxDataReal.SetBinding(TextBox.TextProperty, myBinding);
+            txtRxDataReal.SetBinding(TextBox.TextProperty, myBinding);
 
             comboBoxBaud.Items.Clear();
             comboBoxBaud.Items.Add("9600");
@@ -155,7 +155,7 @@ namespace WpfSerialPort
                         Rxdata.SerialDatas[2],
                         Rxdata.RealData);
                     SetTextInTextBox(txtRxData,msg);
-                    Rxdata.FrameMsg = msg;
+                    Rxdata.FrameMsg = string.Format("ADVal=0x{0:X4}={0:d}", Rxdata.RealData);
 
                 }
             }

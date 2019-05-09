@@ -32,12 +32,11 @@
         
     </Expander>
         <Expander Header="Data Rx" Width="300">
-            <StackPanel Orientation="Vertical" DataContext="Rxdata">
+            <StackPanel Orientation="Vertical" >
                 <TextBox x:Name="txtRxData" Height="350"/>
-                <!--
-                <TextBox x:Name="txtRxDataReal" Height="20"
-                         Text="{Binding Path=FrameMsg}"/>
-                -->
+                
+                <TextBox x:Name="txtRxDataReal" Height="30"/>
+                
             </StackPanel>
             
         </Expander>
