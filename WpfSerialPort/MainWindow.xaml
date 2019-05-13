@@ -4,8 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfSerialPort"
+        xmlns:wpf="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
+        xmlns:zed="clr-namespace:ZedGraph;assembly=ZedGraph"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="598" Width="930">
     <StackPanel Orientation="Horizontal">
     <Expander x:Name="Expander" Header="Serial Port Setting">
     <StackPanel Orientation="Vertical"  HorizontalAlignment="Left" Width="120">
@@ -31,21 +33,35 @@
     </StackPanel>
         
     </Expander>
-        <Expander Header="Data Rx" Width="300">
-            <StackPanel Orientation="Vertical" >
-                <TextBox x:Name="txtRxData" Height="350"/>
+     
+    <StackPanel Orientation="Vertical" Width="780" >
+        <Expander Header="Data Rx" Margin="2,0,0,2">
+             <StackPanel Orientation="Vertical">
+                    
+                <TextBox x:Name="txtRxData" Height="100"/>
                 
-                <TextBox x:Name="txtRxDataReal" Height="30"/>
+                <TextBox x:Name="txtRxDataReal" Height="25"/>
                 
-            </StackPanel>
-            
+                <wpf:WindowsFormsHost Height="300">
+                    <wpf:WindowsFormsHost.Child>
+                        <zed:ZedGraphControl x:Name="zedgraph" />
+                    </wpf:WindowsFormsHost.Child>
+                </wpf:WindowsFormsHost>
+             </StackPanel>
         </Expander>
-        <Expander Header="Data Tx" HorizontalAlignment="Stretch" Width="350">
-            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
-                <TextBox x:Name="txtTxData" Height="20" HorizontalAlignment="Stretch"/>
-                <Button x:Name="btnSendData" Content="Send" Height="20"/>
-            </StackPanel>
+        <Expander Header="Data Tx" 
+                  HorizontalAlignment="Stretch" >
+                <StackPanel Orientation="Vertical" 
+                            HorizontalAlignment="Stretch">
+                    <TextBox x:Name="txtTxData"
+                             Height="25" 
+                             HorizontalAlignment="Stretch"/>
+                    <Button x:Name="btnSendData" 
+                            Content="Send" 
+                            Height="20"/>
+                </StackPanel>
 
-        </Expander>
+            </Expander>
+        </StackPanel>
     </StackPanel>
 </Window>
