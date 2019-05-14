@@ -25,11 +25,13 @@ namespace WpfSerialPort
     {
         SerialPort mySerialPort=null;
         MidiData Rxdata = null;
+        MidiData TxData = null;
         int tickStart = 0;
         public MainWindow()
         {
             InitializeComponent();
             Rxdata =new MidiData();
+            TxData = new MidiData();
 
             SetGraph();
             Binding binding = new Binding("FrameMsg");
@@ -40,6 +42,12 @@ namespace WpfSerialPort
             //// Bind the new data source to the myText TextBlock control's Text dependency property.
             txtRxDataReal.SetBinding(TextBox.TextProperty, binding);
 
+            //binding Txdata
+            binding = new Binding("TxString");
+            binding.Source = TxData;
+            txtTxData.SetBinding(TextBox.TextProperty, binding);
+
+            //SerialPort
             comboBoxBaud.Items.Clear();
             comboBoxBaud.Items.Add("9600");
             comboBoxBaud.Items.Add("19200");
@@ -76,14 +84,20 @@ namespace WpfSerialPort
 
         private void BtnCloseSerialPort_Click(object sender, RoutedEventArgs e)
         {
-            if(mySerialPort!=null)
+            CloseSerialPort();
+        }
+
+
+        void CloseSerialPort()
+        {
+            if (mySerialPort != null)
             {
                 mySerialPort.DataReceived -= new SerialDataReceivedEventHandler(DataReceivedHandler);
                 mySerialPort.Close();
-                Console.WriteLine("Closed:"+mySerialPort.ToString());
+                Console.WriteLine("Closed:" + mySerialPort.ToString());
             }
-        }
 
+        }
         private void BtnOpenSerialPort_Click(object sender, RoutedEventArgs e)
         {
             if(comboBoxPortName.SelectedItem !=null)
@@ -159,6 +173,7 @@ namespace WpfSerialPort
                         Rxdata.RealData);
                     SetTextInTextBox(txtRxData,msg);
                     Rxdata.FrameMsg = string.Format("ADVal=0x{0:X4}={0:d}", Rxdata.RealData);
+                    ///Add data point into ZedGraph
                     AddDataPoint(Rxdata.RealData);
                 }
             }
@@ -307,5 +322,19 @@ namespace WpfSerialPort
             zedgraph.Invalidate();
         }
 
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            CloseSerialPort();
+        }
+
+        private void BtnSendData_Click(object sender, RoutedEventArgs e)
+        {
+            byte[] txdat = TxData.TxBytes;
+            if (txdat != null &&mySerialPort!=null)
+            {
+                mySerialPort.Write(txdat,0,txdat.Length);
+            }
+
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -67,6 +68,46 @@ namespace WpfSerialPort
             serialdatas[1] = 0;
             serialdatas[2] = 0;
             DataIdx = 0;
+        }
+
+        private string txString;
+
+        public string TxString
+        {
+            get
+            {
+                return txString;
+            }
+
+            set
+            {
+                if(txString!=value)
+                {
+                    txString = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public byte[] TxBytes
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(txString))
+                {
+                    return null;
+                }
+                string[] splited = txString.Split(new Char[] { ' ', ',', '.', ':', '\t' });
+                byte[] txDataBuf = new byte[splited.Length];
+                for(int i=0;i< splited.Length;i++)
+                {
+                    if (!(byte.TryParse(splited[i], NumberStyles.HexNumber, null,out txDataBuf[i])))
+                    {
+                        txDataBuf[i] = 0;
+                    }
+                }
+                return txDataBuf;
+            }
         }
     }
 }

@@ -7,61 +7,92 @@
         xmlns:wpf="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
         xmlns:zed="clr-namespace:ZedGraph;assembly=ZedGraph"
         mc:Ignorable="d"
-        Title="MainWindow" Height="598" Width="930">
-    <StackPanel Orientation="Horizontal">
-    <Expander x:Name="Expander" Header="Serial Port Setting">
-    <StackPanel Orientation="Vertical"  HorizontalAlignment="Left" Width="120">
-        <ComboBox x:Name="comboBoxPortName" 
-                  Margin="5,2,5,0" 
-                  DropDownOpened="ComboBoxPortName_DropDownOpened"/>
-        <ComboBox x:Name="comboBoxBaud" 
-                  Margin="5,2,5,0" 
-                  SelectionChanged="ComboBoxBaud_SelectionChanged" 
-                  DropDownOpened="ComboBoxBaud_DropDownOpened"/>
+        Title="Arduino Serial Port Visualizer" 
+        HorizontalAlignment="Stretch" 
+        VerticalAlignment="Stretch" 
+        Closing="Window_Closing" 
+        Width="850"
+        >
+    <StackPanel Orientation="Horizontal" 
+                HorizontalAlignment="Left"
+                VerticalAlignment="Stretch"
+                Width="{Binding ElementName=Container,Path=ActualWidth}"
+                >
+        <Expander x:Name="Expander" Header="Serial Port Setting">
+        <StackPanel Orientation="Vertical"  
+                    HorizontalAlignment="Left" 
+                    Width="120">
+            <ComboBox x:Name="comboBoxPortName" 
+                      Margin="5,2,5,0" 
+                      DropDownOpened="ComboBoxPortName_DropDownOpened"/>
+            <ComboBox x:Name="comboBoxBaud" 
+                      Margin="5,2,5,0" 
+                      SelectionChanged="ComboBoxBaud_SelectionChanged" 
+                      DropDownOpened="ComboBoxBaud_DropDownOpened"/>
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" >
-            <Button x:Name="btnOpenSerialPort" 
-                    Content="Open" 
-                    Margin="5,2,5,0" 
-                    Click="BtnOpenSerialPort_Click"/>
-            <Button x:Name="btnCloseSerialPort" 
-                    Content="Close" 
-                    Margin="34,2,6,0" 
-                    Click="BtnCloseSerialPort_Click"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" >
+                <Button x:Name="btnOpenSerialPort" 
+                        Content="Open" 
+                        Margin="5,2,5,0" 
+                        Click="BtnOpenSerialPort_Click"/>
+                <Button x:Name="btnCloseSerialPort" 
+                        Content="Close" 
+                        Margin="34,2,6,0" 
+                        Click="BtnCloseSerialPort_Click"/>
+            </StackPanel>
+
         </StackPanel>
-
-    </StackPanel>
         
-    </Expander>
-     
-    <StackPanel Orientation="Vertical" Width="780" >
-        <Expander Header="Data Rx" Margin="2,0,0,2">
-             <StackPanel Orientation="Vertical">
-                    
-                <TextBox x:Name="txtRxData" Height="100"/>
-                
-                <TextBox x:Name="txtRxDataReal" Height="25"/>
-                
-                <wpf:WindowsFormsHost Height="300">
-                    <wpf:WindowsFormsHost.Child>
-                        <zed:ZedGraphControl x:Name="zedgraph" />
-                    </wpf:WindowsFormsHost.Child>
-                </wpf:WindowsFormsHost>
-             </StackPanel>
         </Expander>
-        <Expander Header="Data Tx" 
-                  HorizontalAlignment="Stretch" >
+     
+            <StackPanel Orientation="Vertical" 
+                        VerticalAlignment="Stretch"
+                        HorizontalAlignment="left"
+                        Width="700"
+                        Margin="0,0,0,0">
+            <Expander Header="Data Tx" 
+                          HorizontalAlignment="Stretch"
+                          Margin="0,0,0,0"
+                           Width="700">
                 <StackPanel Orientation="Vertical" 
-                            HorizontalAlignment="Stretch">
+                                HorizontalAlignment="Stretch">
                     <TextBox x:Name="txtTxData"
-                             Height="25" 
-                             HorizontalAlignment="Stretch"/>
+                                     Height="22" 
+                                     HorizontalAlignment="Stretch"/>
                     <Button x:Name="btnSendData" 
-                            Content="Send" 
-                            Height="20"/>
+                                Content="Send"
+                                HorizontalAlignment="Right"
+                                Height="22" Click="BtnSendData_Click"/>
                 </StackPanel>
-
             </Expander>
+            <Expander Header="Data Rx" 
+                          Margin="0,0,0,0"
+                          HorizontalAlignment="Stretch"
+                           Width="700" Height="477"
+                          >
+                     <StackPanel Orientation="Vertical" 
+                                 HorizontalAlignment="Stretch"
+                                 VerticalAlignment="Stretch"
+                                  Width="{Binding ElementName=Container,Path=ActualWidth}">
+                    
+                        <TextBox x:Name="txtRxData" 
+                                 Height="100"/>
+                
+                        <TextBox x:Name="txtRxDataReal" 
+                                 Height="22"/>
+                
+                        <wpf:WindowsFormsHost 
+                            HorizontalAlignment="Stretch"
+                            Width="698"
+                            Height="300"
+                            Margin="0,0,0,0 ">
+                            <wpf:WindowsFormsHost.Child>
+                                <zed:ZedGraphControl x:Name="zedgraph" />
+                            </wpf:WindowsFormsHost.Child>
+                        </wpf:WindowsFormsHost>
+                     </StackPanel>
+                </Expander>
+                
         </StackPanel>
     </StackPanel>
 </Window>
