@@ -31,6 +31,9 @@ unsigned long prevTime;
 #define DF_TimePeriod	(1000)
 byte buffer[DF_DataLen];
 byte bufCrc[8];
+byte rxbuf[DF_DataLen];
+byte rxIdx;
+
 #define CRC8_POLY 0x2F // Polynomial=0x2F
 #define CRC8_INIT 0xFF //Initial value=0xFF 
 /* *
@@ -66,7 +69,7 @@ uint8_t CRC8(uint8_t *pInData, uint8_t length)
 void setup() {
 	// initialize serial communications at 9600 bps:
 	Serial.begin(38400);
-
+	rxIdx = 0;
 
 }
 
@@ -88,7 +91,18 @@ void CalcPowerCrc(byte enptc1,uint16_t pow)
 
 }
 
+uint16_t RePackData(byte dat1, byte dat2)
+{
+	uint16_t ret;
+	ret = dat2 & 0x7f;
+	ret <<= 7;
+	ret += (dat1 & 0x7f);
+	return ret;
+}
+
+
 void loop() {
+	uint16_t repack;
 	unsigned long currentime = millis();
 	if ((currentime - prevTime) >= DF_TimePeriod)
 	{
@@ -119,7 +133,34 @@ void loop() {
 	if (Serial.available()>0)
 	{
 			int rxdata=Serial.read();
-			Serial.write(rxdata);
+			//Serial.write(rxdata);
+			if ((rxdata & 0x80) != 0)
+			{
+				rxIdx = 0;
+				rxbuf[rxIdx] = (byte)rxdata;
+				rxIdx++;
+			}
+			else if( (rxIdx == 1) 
+				&& ((rxdata & 0x80) == 0))
+			{
+				rxbuf[rxIdx] = (byte)rxdata;
+				rxIdx++;
+			}
+			else if((rxIdx == 2)
+				&& ((rxdata & 0x80) == 0))
+			{
+				rxbuf[rxIdx] = (byte)rxdata;
+				rxIdx++;
+			}
+			else {
+				rxIdx = 0;
+			}
+			if (rxIdx == 3)
+			{
+				//Test reconstruct
+				repack=RePackData(rxbuf[1], rxbuf[2]);
+				Serial.write((byte*)&repack, 2);
+			}
 	}
 	
 }
