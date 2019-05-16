@@ -34,8 +34,13 @@ byte bufCrc[8];
 byte rxbuf[DF_DataLen];
 byte rxIdx;
 
+//Time out 20ms
+#define DF_TIME_OUT_PERIOD   (20U)
+unsigned long timeoutPrev;
+
+
 #define CRC8_POLY 0x2F // Polynomial=0x2F
-#define CRC8_INIT 0xFF //Initial value=0xFF 
+#define CRC8_INIT 0xFF //Initial value=0xFF
 /* *
 * Calculating CRC - 8in 'C'
 * @para pInData, pointer of data
@@ -59,7 +64,7 @@ uint8_t CRC8(uint8_t *pInData, uint8_t length)
 			crc <<= 1;
 			}
 		}
-	} 
+	}
 	crc ^= CRC8_INIT;
 	return crc;
 }
@@ -102,8 +107,9 @@ uint16_t RePackData(byte dat1, byte dat2)
 
 
 void loop() {
-	uint16_t repack;
+	
 	unsigned long currentime = millis();
+
 	if ((currentime - prevTime) >= DF_TimePeriod)
 	{
 		prevTime = currentime;
@@ -130,37 +136,65 @@ void loop() {
 		//CalcPowerCrc(0, 0);
 		//CalcPowerCrc(1, 2500);
 	}
-	if (Serial.available()>0)
+
+	//Serial data received process	
+	SerialDataProcess();
+
+}
+
+void SerialDataProcess()
+{
+	unsigned long timeoutNow;
+	uint16_t repack;
+	timeoutNow = millis();
+	if (Serial.available() > 0)
 	{
-			int rxdata=Serial.read();
-			//Serial.write(rxdata);
-			if ((rxdata & 0x80) != 0)
-			{
-				rxIdx = 0;
-				rxbuf[rxIdx] = (byte)rxdata;
-				rxIdx++;
-			}
-			else if( (rxIdx == 1) 
-				&& ((rxdata & 0x80) == 0))
-			{
-				rxbuf[rxIdx] = (byte)rxdata;
-				rxIdx++;
-			}
-			else if((rxIdx == 2)
-				&& ((rxdata & 0x80) == 0))
-			{
-				rxbuf[rxIdx] = (byte)rxdata;
-				rxIdx++;
-			}
-			else {
-				rxIdx = 0;
-			}
-			if (rxIdx == 3)
-			{
-				//Test reconstruct
-				repack=RePackData(rxbuf[1], rxbuf[2]);
-				Serial.write((byte*)&repack, 2);
-			}
+		int rxdata = Serial.read();
+		//Serial.write(rxdata);
+		if ((rxdata & 0x80) != 0)
+		{
+			timeoutPrev = timeoutNow;
+			rxIdx = 0;
+			rxbuf[rxIdx] = (byte)rxdata;
+			rxIdx++;
+		}
+		else if ((rxIdx == 1)
+			&& ((rxdata & 0x80) == 0))
+		{
+			//timeoutPrev = timeoutNow;
+			rxbuf[rxIdx] = (byte)rxdata;
+			rxIdx++;
+		}
+		else if ((rxIdx == 2)
+			&& ((rxdata & 0x80) == 0))
+		{
+			//timeoutPrev = timeoutNow;
+			rxbuf[rxIdx] = (byte)rxdata;
+			rxIdx++;
+		}
+		else {
+			rxIdx = 0;
+		}
+
 	}
-	
+	//Check Time out
+	if (timeoutNow - timeoutPrev > DF_TIME_OUT_PERIOD)
+	{
+		timeoutPrev = timeoutNow;
+		if (rxIdx != 0) {
+			Serial.write(0x99);
+		}
+
+		//Timeout reset index
+		rxIdx = 0;
+	}
+	//Check Frame received
+	if (rxIdx == 3)
+	{
+		//Test reconstruct
+		repack = RePackData(rxbuf[1], rxbuf[2]);
+		Serial.write((byte*)&repack, 2);
+		rxIdx = 0;
+	}
+
 }
