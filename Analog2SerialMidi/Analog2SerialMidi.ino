@@ -191,6 +191,7 @@ void SerialDataProcess()
 	//Check Frame received
 	if (rxIdx == 3)
 	{
+		//Midi Command Process here
 		//Test reconstruct
 		repack = RePackData(rxbuf[1], rxbuf[2]);
 		Serial.write((byte*)&repack, 2);
