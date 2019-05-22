@@ -23,15 +23,17 @@
 void setup() {
 	// Set MIDI baud rate:
 	Serial.begin(38400);
+	delay(1000);
+	programChange();
 }
 
 void loop() {
 	// play notes from F#-0 (0x1E) to F#-5 (0x5A):
-	for (int channel = 9; channel < 11; channel++)
+	for (int channel = 7; channel < 11; channel++)
 	{
-		for (int note =(12+ 0x1e); note < (12+24+0x1e); note++) {
+		for (int note =(0x3c); note < (24+0x3c); note++) {
 			//Note on channel 1 (0x90), some note value (note), middle velocity (0x45):
-			noteOn(0x90 | channel, note, 0x10);
+			noteOn(0x90 | channel, note, 0x30);
 			delay(100);
 			//Note on channel 1 (0x90), some note value (note), silent velocity (0x00):
 			noteOn(0x90 | channel, note, 0x00);
@@ -39,15 +41,15 @@ void loop() {
 		}
 
 	}
-	for (int channel = 9; channel < 11; channel++)
+	for (int channel = 7; channel < 11; channel++)
 	{
-		for (int note = (12 + 0x1e); note < (12 + 24 + 0x1e); note++) {
+		for (int note = (0x3c); note < (24 + 0x3c); note++) {
 			//Note on channel 1 (0x90), some note value (note), middle velocity (0x45):
-			noteOn(0x90 | channel, note, 0x70);
-			delay(100);
+			noteOn(0x90 | channel, note, 0x7f);
+			delay(150);
 			//Note on channel 1 (0x90), some note value (note), silent velocity (0x00):
 			noteOn(0x90 | channel, note, 0x00);
-			delay(100);
+			delay(150);
 		}
 
 	}
@@ -59,4 +61,23 @@ void noteOn(int cmd, int pitch, int velocity) {
 	Serial.write(cmd);
 	Serial.write(pitch);
 	Serial.write(velocity);
+}
+
+void programChange()
+{
+	//0x41=65=Instrument 66=Alto Sax
+	Serial.write(0xC7);
+	Serial.write(0x41);
+	//27. Electric Guitar (jazz)
+	Serial.write(0xC8);
+	//26=instrument27 Electric Guitar (jazz)
+	Serial.write(0x1A);
+
+	//Drum
+	Serial.write(0xC9);
+	Serial.write(0x00);
+	//25. Acoustic Guitar (nylon)
+	Serial.write(0xCA);
+	Serial.write(25-1);
+
 }
