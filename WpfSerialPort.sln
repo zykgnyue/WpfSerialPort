@@ -16,6 +16,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Readme.md = Readme.md
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mididemo", "mididemo\mididemo.vcxproj", "{1EB63D76-14EF-41D1-9B10-F1C35116458F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,6 +56,12 @@ Global
 		{6B035B35-66CF-495D-B6A4-4EFD50587C3E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6B035B35-66CF-495D-B6A4-4EFD50587C3E}.Release|x86.ActiveCfg = Release|Any CPU
 		{6B035B35-66CF-495D-B6A4-4EFD50587C3E}.Release|x86.Build.0 = Release|Any CPU
+		{1EB63D76-14EF-41D1-9B10-F1C35116458F}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{1EB63D76-14EF-41D1-9B10-F1C35116458F}.Debug|x86.ActiveCfg = Debug|Win32
+		{1EB63D76-14EF-41D1-9B10-F1C35116458F}.Debug|x86.Build.0 = Debug|Win32
+		{1EB63D76-14EF-41D1-9B10-F1C35116458F}.Release|Any CPU.ActiveCfg = Release|Win32
+		{1EB63D76-14EF-41D1-9B10-F1C35116458F}.Release|x86.ActiveCfg = Release|Win32
+		{1EB63D76-14EF-41D1-9B10-F1C35116458F}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
